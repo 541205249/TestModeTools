@@ -1,0 +1,16 @@
+ext {
+    android = [
+            compileSdkVersion: 26,
+            buildToolsVersion: "26.0.2",
+            minSdkVersion    : 21,
+            targetSdkVersion : 26,
+    ]
+
+    userOrg = 'jiazongyi'
+    groupId = 'com.jiazy.testmode'
+    uploadName = 'TestModeTools'
+    publishVersion = '0.0.1'
+    description = 'a easy API to use runtime permission for Android M '
+    website = 'https://github.com/541205249/GradlePlugin'
+    licences = ['Apache-2.0']
+}

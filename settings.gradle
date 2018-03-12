@@ -1,0 +1,1 @@
+include ':test-tools-annotation', ':test-tools-plugin', ':aop-tools-runtime'
