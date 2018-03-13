@@ -9,7 +9,7 @@ ext {
     userOrg = 'jiazongyi'
     groupId = 'com.jiazy.testmode'
     uploadName = 'TestModeTools'
-    publishVersion = '0.0.1'
+    publishVersion = '0.0.2'
     description = 'a easy API to use runtime permission for Android M '
     website = 'https://github.com/541205249/GradlePlugin'
     licences = ['Apache-2.0']
