@@ -1,6 +1,11 @@
 package com.jiazy.aoptools.runtime;
 
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.util.Log;
+
+import com.jiazy.testmode.annotation.CollectElapsedTime;
+import com.jiazy.testmode.annotation.DebugTraceLog;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -9,27 +14,29 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.CodeSignature;
+import org.aspectj.lang.reflect.MethodSignature;
 
 /**
- * DebugLogAspect
+ * CollectElapsedTimeAspect
  */
 
 @Aspect
-public class DebugLogAspect {
+public class CollectElapsedTimeAspect {
 	private static final String POINTCUT_METHOD =
-			"execution(@com.jiazy.testmode.annotation.DebugLog * *(..))";
+			"execution(@com.jiazy.testmode.annotation.CollectElapsedTime * *(..))";
 
 	private static final String POINTCUT_CONSTRUCTOR =
-			"execution(@com.jiazy.testmode.annotation.DebugLog *.new(..))";
+			"execution(@com.jiazy.testmode.annotation.CollectElapsedTime *.new(..))";
 
 	@Pointcut(POINTCUT_METHOD)
-	public void methodAnnotatedWithDebugLog() {}
+	public void methodAnnotatedWithCollectElapsedTime() {}
 
 	@Pointcut(POINTCUT_CONSTRUCTOR)
-	public void constructorAnnotatedDebugLog() {}
+	public void constructorAnnotatedWithCollectElapsedTime() {}
 
-	@Around("methodAnnotatedWithDebugLog() || constructorAnnotatedDebugLog()")
+	@Around("methodAnnotatedWithCollectElapsedTime() || constructorAnnotatedWithCollectElapsedTime")
 	public Object weaveJoinPoint(ProceedingJoinPoint joinPoint) throws Throwable {
+
 		enterMethod(joinPoint);
 		long start = System.currentTimeMillis();
 		Object result = joinPoint.proceed();
@@ -37,9 +44,19 @@ public class DebugLogAspect {
 		long timeDifference = end-start;
 		endMethod(joinPoint,timeDifference);
 
-		BroadcastUtils.sendA(timeDifference);
+		sendMsg(joinPoint, timeDifference);
 
 		return result;
+	}
+
+	@TargetApi(Build.VERSION_CODES.N)
+	private void sendMsg(ProceedingJoinPoint joinPoint, long timeDifference) {
+		MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
+		CollectElapsedTime collectElapsedTime =
+				methodSignature.getMethod().getDeclaredAnnotation(CollectElapsedTime.class);
+		if (collectElapsedTime != null) {
+			BroadcastUtils.sendElapsedTime(collectElapsedTime.target(), timeDifference);
+		}
 	}
 
 	private static void enterMethod(JoinPoint joinPoint){

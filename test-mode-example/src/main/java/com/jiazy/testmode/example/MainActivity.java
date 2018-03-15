@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
-import com.jiazy.testmode.annotation.DebugLog;
+import com.jiazy.testmode.annotation.CollectElapsedTime;
 
 import java.util.Random;
 
@@ -26,7 +26,7 @@ public class MainActivity extends Activity {
 
     private void test(){
         Thread t = new Thread(new Runnable() {
-            @DebugLog
+            @CollectElapsedTime(target = "start")
             @Override
             public void run() {
                 int i = new Random().nextInt(5);
