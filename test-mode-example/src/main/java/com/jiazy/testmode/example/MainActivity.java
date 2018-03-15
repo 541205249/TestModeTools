@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
-import com.jiazy.testtools.annotation.DebugLog;
+import com.jiazy.testmode.annotation.DebugLog;
 
 import java.util.Random;
 

@@ -12,7 +12,7 @@ public class BroadcastUtils {
 
     public static void sendA(long timeDifference) {
         Intent intent = new Intent("com.eebbk.test.aoptest");
-        intent.putExtra("test","method spend time"+ (timeDifference));
+        intent.putExtra("test", "method spend time"  + (timeDifference));
         ContextInstance.getInstance().getContext().sendBroadcast(intent);
     }
 }

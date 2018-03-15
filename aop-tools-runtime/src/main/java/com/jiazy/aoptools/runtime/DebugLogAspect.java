@@ -17,10 +17,10 @@ import org.aspectj.lang.reflect.CodeSignature;
 @Aspect
 public class DebugLogAspect {
 	private static final String POINTCUT_METHOD =
-			"execution(@com.jiazy.testmode.annotations.DebugLog * *(..))";
+			"execution(@com.jiazy.testmode.annotation.DebugLog * *(..))";
 
 	private static final String POINTCUT_CONSTRUCTOR =
-			"execution(@com.jiazy.testmode.annotations.DebugLog *.new(..))";
+			"execution(@com.jiazy.testmode.annotation.DebugLog *.new(..))";
 
 	@Pointcut(POINTCUT_METHOD)
 	public void methodAnnotatedWithDebugLog() {}

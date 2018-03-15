@@ -1,4 +1,4 @@
-package com.jiazy.testtools.annotation;
+package com.jiazy.testmode.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

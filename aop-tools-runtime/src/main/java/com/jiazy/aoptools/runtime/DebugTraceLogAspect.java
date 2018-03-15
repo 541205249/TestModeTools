@@ -4,7 +4,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.jiazy.aoptools.runtime.bean.MethodTraceInfo;
-import com.jiazy.testtools.annotation.DebugTraceLog;
+import com.jiazy.testmode.annotation.DebugTraceLog;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -25,7 +25,7 @@ public class DebugTraceLogAspect {
 	private HashMap<String,LinkedList<MethodTraceInfo>> traceMap = new HashMap<>();
 
 	private static final String POINTCUT_METHOD =
-			"execution(@com.jiazy.testmode.annotations.DebugTraceLog * *(..))";
+			"execution(@com.jiazy.testmode.annotation.DebugTraceLog * *(..))";
 
 	@Pointcut(POINTCUT_METHOD)
 	public void methodAnnotatedWithDebugTraceLog() {}
