@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-apply plugin: 'test-mode-plugin'
+apply plugin: 'com.jiazy.testmode'
 
 android {
     compileSdkVersion 26
@@ -24,5 +24,4 @@ android {
 
 dependencies {
 //    implementation fileTree(dir: 'libs', include: ['*.jar'])
-
 }

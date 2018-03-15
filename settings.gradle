@@ -1,1 +1,4 @@
-include ':test-tools-annotation', ':aop-tools-runtime', ':test-tools-plugin', ':test-mode-example'
+include ':test-tools-annotation'
+include ':aop-tools-runtime'
+include ':test-tools-plugin'
+include ':test-mode-example'

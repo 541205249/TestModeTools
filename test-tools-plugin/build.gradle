@@ -14,9 +14,9 @@ dependencies {
 
 
 //////////////////////////////本地//////////////////////////////
-repositories {
+/*repositories {
     mavenCentral()
-}
+}*/
 
 uploadArchives {
     repositories {
@@ -25,7 +25,7 @@ uploadArchives {
                 authentication(userName: 'admin', password: 'admin123')
             }
             pom.groupId = rootProject.ext.groupId
-            pom.artifactId = 'test-mode-plugin' // 插件名
+            pom.artifactId = 'plugin' // 插件名
             pom.version = rootProject.ext.publishVersion // 版本号
         }
     }

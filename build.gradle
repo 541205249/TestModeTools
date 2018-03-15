@@ -9,9 +9,9 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:3.0.1'
         classpath 'org.aspectj:aspectjtools:1.8.13'
-//        classpath 'com.novoda:bintray-release:0.5.0'
+        classpath 'com.novoda:bintray-release:0.5.0'
 
-        classpath 'com.jiazy.testmode:test-mode-plugin:0.0.3'
+        classpath 'com.jiazy.testmode:plugin:0.0.8'
     }
 }
 

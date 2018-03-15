@@ -11,7 +11,6 @@ import java.util.Random;
 
 public class MainActivity extends Activity {
 
-    @DebugLog
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
