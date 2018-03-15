@@ -2,18 +2,24 @@ apply from:"config.gradle"
 
 buildscript {
     repositories {
+        google()
         jcenter()
+        maven { url 'C:/Users/admin/.m2/repository' }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.0'
+        classpath 'com.android.tools.build:gradle:3.0.1'
         classpath 'org.aspectj:aspectjtools:1.8.13'
-        classpath 'com.novoda:bintray-release:0.5.0'
+//        classpath 'com.novoda:bintray-release:0.5.0'
+
+        classpath 'com.jiazy.testmode:test-mode-plugin:0.0.3'
     }
 }
 
 allprojects {
     repositories {
+        google()
         jcenter()
+        maven { url 'C:/Users/admin/.m2/repository' }
     }
 }
 
@@ -25,8 +31,4 @@ allprojects {
             links "http://docs.oracle.com/javase/7/docs/api"
         }
     }
-}
-
-task clean(type: Delete) {
-    delete rootProject.buildDir
 }

@@ -9,6 +9,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/aop-tools-runtime" />
+            <option value="$PROJECT_DIR$/test-mode-example" />
             <option value="$PROJECT_DIR$/test-tools-annotation" />
             <option value="$PROJECT_DIR$/test-tools-plugin" />
           </set>

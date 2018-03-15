@@ -1,15 +1,41 @@
 apply plugin: 'groovy'
-apply plugin: 'com.novoda.bintray-release'
+//apply plugin: 'com.novoda.bintray-release'  //jcenter
+apply plugin: 'maven'//本地使用
+
 
 dependencies {
-    //导入Gradle的api，要写插件，肯定要使用Gradle的api
     compile gradleApi()
-    compile 'com.android.tools.build:gradle:2.3.3'
+    compile localGroovy() //本地仓库需要
+    compile 'com.android.tools.build:gradle:3.0.1'
     compile 'org.aspectj:aspectjtools:1.8.13'
     compile 'org.aspectj:aspectjrt:1.8.13'
 }
 
-publish {
+
+
+//////////////////////////////本地//////////////////////////////
+repositories {
+    mavenCentral()
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url:rootProject.ext.repositoryUrl){
+                authentication(userName: 'admin', password: 'admin123')
+            }
+            pom.groupId = rootProject.ext.groupId
+            pom.artifactId = 'test-mode-plugin' // 插件名
+            pom.version = rootProject.ext.publishVersion // 版本号
+        }
+    }
+}
+//////////////////////////////本地//////////////////////////////
+
+
+
+//////////////////////////////jcenter//////////////////////////////
+/*publish {
     artifactId = 'plugin'
     userOrg = rootProject.ext.userOrg
     groupId = rootProject.ext.groupId
@@ -18,4 +44,4 @@ publish {
     desc = rootProject.ext.description
     website = rootProject.ext.website
     licences = rootProject.ext.licences
-}
+}*/

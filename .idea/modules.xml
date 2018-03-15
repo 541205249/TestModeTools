@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/TestModeTools.iml" filepath="$PROJECT_DIR$/TestModeTools.iml" />
       <module fileurl="file://$PROJECT_DIR$/aop-tools-runtime/aop-tools-runtime.iml" filepath="$PROJECT_DIR$/aop-tools-runtime/aop-tools-runtime.iml" />
+      <module fileurl="file://$PROJECT_DIR$/test-mode-example/test-mode-example.iml" filepath="$PROJECT_DIR$/test-mode-example/test-mode-example.iml" />
       <module fileurl="file://$PROJECT_DIR$/test-tools-annotation/test-tools-annotation.iml" filepath="$PROJECT_DIR$/test-tools-annotation/test-tools-annotation.iml" />
       <module fileurl="file://$PROJECT_DIR$/test-tools-plugin/test-tools-plugin.iml" filepath="$PROJECT_DIR$/test-tools-plugin/test-tools-plugin.iml" />
     </modules>

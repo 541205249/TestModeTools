@@ -25,7 +25,7 @@ public class DebugTraceLogAspect {
 	private HashMap<String,LinkedList<MethodTraceInfo>> traceMap = new HashMap<>();
 
 	private static final String POINTCUT_METHOD =
-			"execution(@com.eebbk.aoptools.annotations.DebugTraceLog * *(..))";
+			"execution(@com.jiazy.testmode.annotations.DebugTraceLog * *(..))";
 
 	@Pointcut(POINTCUT_METHOD)
 	public void methodAnnotatedWithDebugTraceLog() {}

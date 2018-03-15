@@ -6,11 +6,17 @@ ext {
             targetSdkVersion : 26,
     ]
 
-    userOrg = 'jiazongyi'
+    userOrg = 'jiazy'
     groupId = 'com.jiazy.testmode'
     uploadName = 'TestModeTools'
-    publishVersion = '0.0.2'
+    publishVersion = '0.0.3'
     description = 'a easy API to use runtime permission for Android M '
-    website = 'https://github.com/541205249/GradlePlugin'
+    website = 'https://github.com/541205249/TestModeTools'
     licences = ['Apache-2.0']
+
+    repositoryUrl = "file://C://Users/admin/.m2/repository"
 }
+
+/**
+ gradlew clean build bintrayUpload -PbintrayUser=jiazy  -PbintrayKey=8ef6c109175c0cfb0bed003e04b15d3084f11b88  -PdryRun=false
+ */

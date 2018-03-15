@@ -1,29 +1,39 @@
-apply plugin: 'com.android.library'
-apply plugin: 'com.novoda.bintray-release'
+apply plugin: 'java'
+//apply plugin: 'com.novoda.bintray-release'
+apply plugin: 'maven'//本地使用
 
-android {
-    compileSdkVersion rootProject.ext.android.compileSdkVersion
-    buildToolsVersion rootProject.ext.android.buildToolsVersion
-
-    lintOptions {
-        abortOnError false
-    }
-}
+sourceCompatibility = "1.7"
+targetCompatibility = "1.7"
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 }
 
-publish {
-    artifactId = 'annotation'
-    userOrg = rootProject.ext.userOrg
-    groupId = rootProject.ext.groupId
-    uploadName = rootProject.ext.uploadName
-    publishVersion = rootProject.ext.publishVersion
-    desc = rootProject.ext.description
-    website = rootProject.ext.website
-    licences = rootProject.ext.licences
+
+//////////////////////////////本地//////////////////////////////
+uploadArchives {
+    repositories.mavenDeployer {
+        repository(url:rootProject.ext.repositoryUrl) {
+            authentication(userName: 'admin', password: 'admin123')
+        }
+        pom.groupId = rootProject.ext.groupId
+        pom.artifactId = "test-tools-annotation"
+        pom.version = rootProject.ext.publishVersion
+    }
 }
+//////////////////////////////本地//////////////////////////////
+
+
+//publish {
+//    artifactId = 'annotation'
+//    userOrg = rootProject.ext.userOrg
+//    groupId = rootProject.ext.groupId
+//    uploadName = rootProject.ext.uploadName
+//    publishVersion = rootProject.ext.publishVersion
+//    desc = rootProject.ext.description
+//    website = rootProject.ext.website
+//    licences = rootProject.ext.licences
+//}
 
 /**
  gradlew clean build bintrayUpload -PbintrayUser=jiazy  -PbintrayKey=43c7463ffd3929df73c6b011b7a81ca92217235e  -PdryRun=false

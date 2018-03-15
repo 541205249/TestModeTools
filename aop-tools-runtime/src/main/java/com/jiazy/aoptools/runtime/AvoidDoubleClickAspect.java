@@ -1,6 +1,5 @@
 package com.jiazy.aoptools.runtime;
 
-import android.util.Log;
 import android.view.View;
 
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -19,7 +18,7 @@ public class AvoidDoubleClickAspect {
 	private static final int CLICK_DELAY_TIME = 2000;
 
 	private static final String POINTCUT_METHOD =
-			"execution(@com.eebbk.aoptools.annotations.AvoidDoubleClick * *(..))";
+			"execution(@com.jiazy.testmode.annotations.AvoidDoubleClick * *(..))";
 
 	@Pointcut(POINTCUT_METHOD)
 	public void methodAnnotatedWithAvoidDoubleClick() {}
