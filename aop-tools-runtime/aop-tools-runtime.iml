@@ -110,7 +110,7 @@
     </content>
     <orderEntry type="jdk" jdkName="Android API 26 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="com.jiazy.testmode:annotation:0.1.14@jar" level="project" />
     <orderEntry type="library" name="org.aspectj:aspectjrt:1.8.13@jar" level="project" />
+    <orderEntry type="library" name="com.jiazy.testmode:annotation:0.1.16@jar" level="project" />
   </component>
 </module>
