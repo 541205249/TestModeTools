@@ -4,7 +4,8 @@ import android.annotation.TargetApi;
 import android.os.Build;
 import android.util.Log;
 
-import com.jiazy.testmode.annotation.CollectElapsedTime;
+import com.jiazy.aoptools.runtime.bean.MethodTraceInfo;
+import com.jiazy.testmode.annotation.CollectSpentTimeAsync;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -13,70 +14,71 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.CodeSignature;
-import org.aspectj.lang.reflect.MethodSignature;
 
 import java.lang.reflect.Method;
-
-/**
- * CollectElapsedTimeAspect
- */
+import java.util.HashMap;
 
 @Aspect
-public class CollectElapsedTimeAspect {
+public class CollectSpentTimeAsyncAspect {
+	private HashMap<String,MethodTraceInfo> traceMap = new HashMap<>();
+
+
 	private static final String POINTCUT_METHOD =
-			"execution(@com.jiazy.testmode.annotation.CollectElapsedTime * *(..))";
+			"execution(@com.jiazy.testmode.annotation.CollectSpentTimeAsync * *(..))";
 
 	private static final String POINTCUT_CONSTRUCTOR =
-			"execution(@com.jiazy.testmode.annotation.CollectElapsedTime *.new(..))";
+			"execution(@com.jiazy.testmode.annotation.CollectSpentTimeAsync *.new(..))";
 
 	@Pointcut(POINTCUT_METHOD)
-	public void methodAnnotatedWithCollectElapsedTime() {}
+	public void methodAnnotatedWithCollectSpentTimeAsync() {}
 
-	@Pointcut(POINTCUT_CONSTRUCTOR)
-	public void constructorAnnotatedWithCollectElapsedTime() {}
-
-	@Around("methodAnnotatedWithCollectElapsedTime()")
+	@Around("methodAnnotatedWithCollectSpentTimeAsync()")
 	public Object weaveJoinPoint(ProceedingJoinPoint joinPoint) throws Throwable {
 		Log.i("weaveJoinPoint", "!!!!!!!!!!");
-		enterMethod(joinPoint);
+
 		long start = System.currentTimeMillis();
+		if(isStartPoint(joinPoint)) {
+
+		}
 		Object result = joinPoint.proceed();
 		long end = System.currentTimeMillis();
-		long timeDifference = end-start;
-		endMethod(joinPoint,timeDifference);
+		long spentTime = end-start;
 
-		sendMsg(joinPoint, timeDifference);
+		sendMsg(joinPoint, spentTime);
 
 		return result;
 	}
 
 	@TargetApi(Build.VERSION_CODES.N)
-	private void sendMsg(ProceedingJoinPoint joinPoint, long timeDifference) {
-		Method method = getMethod(joinPoint);
+	private boolean isStartPoint(ProceedingJoinPoint joinPoint) {
+		Method method = ReflectionUtils.getMethod(joinPoint);
+		if (method == null) {
+			Log.i("weaveJoinPoint", "method == null");
+			return false;
+		}
+
+		CollectSpentTimeAsync annotation = method.getDeclaredAnnotation(CollectSpentTimeAsync.class);
+		if (annotation != null) {
+			Log.i("weaveJoinPoint", "annotation == " + annotation.getClass().getName());
+			return annotation.isStartPoint();
+		}
+
+		return false;
+	}
+
+	@TargetApi(Build.VERSION_CODES.N)
+	private void sendMsg(ProceedingJoinPoint joinPoint, long spentTime) {
+		Method method = ReflectionUtils.getMethod(joinPoint);
 		if (method == null) {
 			Log.i("weaveJoinPoint", "method == null");
 			return;
 		}
 
-        CollectElapsedTime annotation = method.getDeclaredAnnotation(CollectElapsedTime.class);
+        CollectSpentTimeAsync annotation = method.getDeclaredAnnotation(CollectSpentTimeAsync.class);
         if (annotation != null) {
-            BroadcastUtils.sendElapsedTime(annotation.target(), timeDifference);
+            BroadcastUtils.sendElapsedTime(annotation.target(), spentTime);
             Log.i("weaveJoinPoint", "annotation == " + annotation.getClass().getName());
         }
-	}
-
-	private Method getMethod(ProceedingJoinPoint joinPoint) {
-		Signature signature = joinPoint.getSignature();
-
-		MethodSignature methodSignature = (MethodSignature) signature;
-		try {
-			return methodSignature.getDeclaringType().getDeclaredMethod(methodSignature.getName(), methodSignature.getParameterTypes());
-//			return joinPoint.getTarget().getClass().getDeclaredMethod(
-//					methodSignature.getName(), methodSignature.getParameterTypes());
-		} catch (NoSuchMethodException e) {
-			e.printStackTrace();
-			return null;
-		}
 	}
 
 	private static void enterMethod(JoinPoint joinPoint){

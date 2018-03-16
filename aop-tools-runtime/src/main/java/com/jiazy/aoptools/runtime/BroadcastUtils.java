@@ -12,14 +12,16 @@ import android.util.Log;
 public class BroadcastUtils {
     private static final String BASE_ACTION = "com.testmode.action";
 
-    public static void sendElapsedTime(String target, long timeDifference) {
+    public static void sendElapsedTime(String target, long spentTime) {
         Intent intent = getAction(target);
-        intent.putExtra("timeDifference", timeDifference);
+        intent.putExtra("spentTime", spentTime);
         ContextInstance.getInstance().getContext().sendBroadcast(intent);
     }
 
-    public static void sendCountMsg(String target) {
+    public static void sendCountMsg(String target, boolean isSuccess, String description) {
         Intent intent = getAction(target);
+        intent.putExtra("isSuccess", isSuccess);
+        intent.putExtra("description", description);
         ContextInstance.getInstance().getContext().sendBroadcast(intent);
     }
 

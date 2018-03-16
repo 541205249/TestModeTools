@@ -6,7 +6,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.TYPE,ElementType.METHOD,ElementType.CONSTRUCTOR})
-public @interface CollectElapsedTime {
+@Target({ElementType.TYPE,ElementType.METHOD,ElementType.FIELD,ElementType.CONSTRUCTOR})
+public @interface CollectSpentTimeAsync {
     String target();
+    boolean isStartPoint() default true;
 }

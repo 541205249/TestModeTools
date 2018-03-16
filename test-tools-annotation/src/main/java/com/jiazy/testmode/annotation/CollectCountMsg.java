@@ -9,9 +9,10 @@ import java.lang.annotation.Target;
  * CollectCountMsg
  */
 
-@Retention(RetentionPolicy.CLASS)
-@Target({ElementType.FIELD,ElementType.METHOD,ElementType.TYPE})
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.TYPE,ElementType.METHOD,ElementType.FIELD,ElementType.CONSTRUCTOR})
 public @interface CollectCountMsg {
 	String target();
 	boolean isSuccess();
+	String description() default "";
 }
