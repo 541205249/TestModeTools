@@ -15,6 +15,7 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.CodeSignature;
 import org.aspectj.lang.reflect.MethodSignature;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
 /**
@@ -52,7 +53,7 @@ public class CollectElapsedTimeAspect {
 
 	@TargetApi(Build.VERSION_CODES.N)
 	private void sendMsg(ProceedingJoinPoint joinPoint, long timeDifference) {
-//		BroadcastUtils.sendElapsedTime("sssss", 111111);
+		BroadcastUtils.sendElapsedTime("sssss", 111111);
 
 		Method method = getMethod(joinPoint);
 		if (method == null) {
@@ -60,32 +61,52 @@ public class CollectElapsedTimeAspect {
 			return;
 		}
 
-		CollectElapsedTime annotation = method.getDeclaredAnnotation(CollectElapsedTime.class);
-		if (annotation != null) {
-			BroadcastUtils.sendElapsedTime(annotation.target(), timeDifference);
+//		CollectElapsedTime annotation = method.getDeclaredAnnotation(CollectElapsedTime.class);
+//		if (annotation != null) {
+//			BroadcastUtils.sendElapsedTime(annotation.target(), timeDifference);
+//			Log.i("weaveJoinPoint", "annotation == " + annotation.getClass().getName());
+//		}
+
+		Annotation annotation1= method.getAnnotation(CollectElapsedTime.class);
+		Annotation annotation2 = method.getDeclaredAnnotation(CollectElapsedTime.class);
+		Annotation[] annotation3 = method.getAnnotations();
+		Annotation[] methodAnnotation = method.getDeclaredAnnotations();
+		for (Annotation aMethodAnnotation : methodAnnotation) {
+			if (! (aMethodAnnotation instanceof CollectElapsedTime)) {
+				continue;
+			}
+
+			CollectElapsedTime annotation = method.getDeclaredAnnotation(CollectElapsedTime.class);
+			if (annotation != null) {
+				BroadcastUtils.sendElapsedTime(annotation.target(), timeDifference);
+				Log.i("weaveJoinPoint", "annotation == " + annotation.getClass().getName());
+				break;
+			}
+
 		}
-		Log.i("weaveJoinPoint", "annotation == " + annotation.getClass().getName());
 	}
 
 	private Method getMethod(ProceedingJoinPoint joinPoint) {
 		Signature signature = joinPoint.getSignature();
-		if (! (signature instanceof MethodSignature)) {
-			throw new IllegalArgumentException("该注解只能用于方法");
-		}
+
+//		if (! (signature instanceof MethodSignature)) {
+//			throw new IllegalArgumentException("该注解只能用于方法");
+//		}
 
 		MethodSignature methodSignature = (MethodSignature) signature;
-		Object target = joinPoint.getTarget();
 		try {
-			return target.getClass().getMethod(methodSignature.getName(), methodSignature.getParameterTypes());
+			return methodSignature.getDeclaringType().getMethod(methodSignature.getName(), methodSignature.getParameterTypes());
+//			return joinPoint.getTarget().getClass().getDeclaredMethod(
+//					methodSignature.getName(), methodSignature.getParameterTypes());
 		} catch (NoSuchMethodException e) {
 			e.printStackTrace();
 			return null;
 		}
-
 	}
 
 	private static void enterMethod(JoinPoint joinPoint){
 		CodeSignature codeSignature = (CodeSignature) joinPoint.getSignature();
+
 		Class<?> cls = codeSignature.getDeclaringType();
 		String methodName = codeSignature.getName();
 		String[] parameterNames = codeSignature.getParameterNames();
@@ -107,12 +128,12 @@ public class CollectElapsedTimeAspect {
 
 		Class<?> cls = signature.getDeclaringType();
 		String methodName = signature.getName();
-		StringBuilder builder = new StringBuilder("<--  ")
-				.append(methodName)
-				.append(" [")
-				.append(spentTime)
-				.append("ms]");
-		Log.e(cls.getSimpleName(),builder.toString());
+		String builder = "<--  " +
+				methodName +
+				" [" +
+				spentTime +
+				"ms]";
+		Log.e(cls.getSimpleName(), builder);
 	}
 
 }

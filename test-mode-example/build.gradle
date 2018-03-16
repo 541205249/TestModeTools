@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-apply plugin: 'com.jiazy.testmode'
+//apply plugin: 'com.jiazy.testmode'
 
 android {
     compileSdkVersion 26

@@ -12,7 +12,7 @@ public class Anno {
     }
 
     @TestAnnotation(id=3, msg = "我是方法")
-    public int getId() {
+    private int getId() {
         return id;
     }
     public void setId(int id) {
