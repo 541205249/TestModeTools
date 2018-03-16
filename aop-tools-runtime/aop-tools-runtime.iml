@@ -17,7 +17,6 @@
         <option name="ALLOW_USER_CONFIGURATION" value="false" />
         <option name="MANIFEST_FILE_RELATIVE_PATH" value="/src/main/AndroidManifest.xml" />
         <option name="RES_FOLDER_RELATIVE_PATH" value="/src/main/res" />
-        <option name="RES_FOLDERS_RELATIVE_PATH" value="" />
         <option name="ASSETS_FOLDER_RELATIVE_PATH" value="/src/main/assets" />
         <option name="PROJECT_TYPE" value="1" />
       </configuration>
@@ -110,7 +109,7 @@
     </content>
     <orderEntry type="jdk" jdkName="Android API 26 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="com.jiazy.testmode:annotation:0.1.6@jar" level="project" />
+    <orderEntry type="library" name="com.jiazy.testmode:annotation:0.1.7@jar" level="project" />
     <orderEntry type="library" name="org.aspectj:aspectjrt:1.8.13@jar" level="project" />
   </component>
 </module>

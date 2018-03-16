@@ -15,6 +15,8 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.CodeSignature;
 import org.aspectj.lang.reflect.MethodSignature;
 
+import java.lang.reflect.Method;
+
 /**
  * CollectElapsedTimeAspect
  */
@@ -33,7 +35,7 @@ public class CollectElapsedTimeAspect {
 	@Pointcut(POINTCUT_CONSTRUCTOR)
 	public void constructorAnnotatedWithCollectElapsedTime() {}
 
-	@Around("methodAnnotatedWithCollectElapsedTime() || constructorAnnotatedWithCollectElapsedTime()")
+	@Around("methodAnnotatedWithCollectElapsedTime()")
 	public Object weaveJoinPoint(ProceedingJoinPoint joinPoint) throws Throwable {
 		Log.i("weaveJoinPoint", "!!!!!!!!!!");
 		enterMethod(joinPoint);
@@ -50,12 +52,36 @@ public class CollectElapsedTimeAspect {
 
 	@TargetApi(Build.VERSION_CODES.N)
 	private void sendMsg(ProceedingJoinPoint joinPoint, long timeDifference) {
-		MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
-		CollectElapsedTime collectElapsedTime =
-				methodSignature.getMethod().getDeclaredAnnotation(CollectElapsedTime.class);
-		if (collectElapsedTime != null) {
-			BroadcastUtils.sendElapsedTime(collectElapsedTime.target(), timeDifference);
+//		BroadcastUtils.sendElapsedTime("sssss", 111111);
+
+		Method method = getMethod(joinPoint);
+		if (method == null) {
+			Log.i("weaveJoinPoint", "method == null");
+			return;
 		}
+
+		CollectElapsedTime annotation = method.getDeclaredAnnotation(CollectElapsedTime.class);
+		if (annotation != null) {
+			BroadcastUtils.sendElapsedTime(annotation.target(), timeDifference);
+		}
+		Log.i("weaveJoinPoint", "annotation == " + annotation.getClass().getName());
+	}
+
+	private Method getMethod(ProceedingJoinPoint joinPoint) {
+		Signature signature = joinPoint.getSignature();
+		if (! (signature instanceof MethodSignature)) {
+			throw new IllegalArgumentException("该注解只能用于方法");
+		}
+
+		MethodSignature methodSignature = (MethodSignature) signature;
+		Object target = joinPoint.getTarget();
+		try {
+			return target.getClass().getMethod(methodSignature.getName(), methodSignature.getParameterTypes());
+		} catch (NoSuchMethodException e) {
+			e.printStackTrace();
+			return null;
+		}
+
 	}
 
 	private static void enterMethod(JoinPoint joinPoint){
