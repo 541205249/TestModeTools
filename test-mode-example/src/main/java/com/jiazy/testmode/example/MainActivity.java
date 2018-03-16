@@ -24,6 +24,7 @@ public class MainActivity extends Activity {
         });
     }
 
+    @CollectElapsedTime(target = "test")
     private void test(){
         Thread t = new Thread(new Runnable() {
             @CollectElapsedTime(target = "start")

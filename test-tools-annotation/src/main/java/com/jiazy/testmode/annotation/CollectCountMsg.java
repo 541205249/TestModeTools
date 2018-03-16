@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
  * CollectCountMsg
  */
 
-@Retention(RetentionPolicy.RUNTIME)
+@Retention(RetentionPolicy.CLASS)
 @Target({ElementType.FIELD,ElementType.METHOD,ElementType.TYPE})
 public @interface CollectCountMsg {
 	String target();

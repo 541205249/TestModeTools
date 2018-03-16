@@ -5,7 +5,6 @@ import android.os.Build;
 import android.util.Log;
 
 import com.jiazy.testmode.annotation.CollectElapsedTime;
-import com.jiazy.testmode.annotation.DebugTraceLog;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -34,9 +33,9 @@ public class CollectElapsedTimeAspect {
 	@Pointcut(POINTCUT_CONSTRUCTOR)
 	public void constructorAnnotatedWithCollectElapsedTime() {}
 
-	@Around("methodAnnotatedWithCollectElapsedTime() || constructorAnnotatedWithCollectElapsedTime")
+	@Around("methodAnnotatedWithCollectElapsedTime() || constructorAnnotatedWithCollectElapsedTime()")
 	public Object weaveJoinPoint(ProceedingJoinPoint joinPoint) throws Throwable {
-
+		Log.i("weaveJoinPoint", "!!!!!!!!!!");
 		enterMethod(joinPoint);
 		long start = System.currentTimeMillis();
 		Object result = joinPoint.proceed();
