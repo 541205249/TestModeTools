@@ -1,9 +1,9 @@
 package com.jiazy.aoptools.runtime;
 
-import android.annotation.TargetApi;
-import android.os.Build;
 import android.util.Log;
 
+import com.jiazy.aoptools.runtime.utils.BroadcastUtils;
+import com.jiazy.aoptools.runtime.utils.ReflectionUtils;
 import com.jiazy.testmode.annotation.CollectCountMsg;
 
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -13,21 +13,24 @@ import org.aspectj.lang.annotation.Pointcut;
 
 import java.lang.reflect.Method;
 
+import static com.jiazy.aoptools.runtime.utils.Constant.POINTCUT_PACKAGE;
+
 @Aspect
 public class CollectCountMsgAspect {
     private static final String POINTCUT_METHOD =
-            "execution(@com.jiazy.testmode.annotation.CollectCountMsg * *(..))";
+            "execution(@" + POINTCUT_PACKAGE + ".CollectCountMsg * *(..))";
 
     @Pointcut(POINTCUT_METHOD)
-    public void methodAnnotatedWithCollectCountMsg() {}
+    public void methodAnnotated() {}
 
-    @Around("methodAnnotatedWithCollectCountMsg()")
-    public void weaveJoinPoint(ProceedingJoinPoint joinPoint) throws Throwable {
-        joinPoint.proceed();
+    @Around("methodAnnotated()")
+    public Object weaveJoinPoint(ProceedingJoinPoint joinPoint) throws Throwable {
+        Object result = joinPoint.proceed();
         sendMsg(joinPoint);
+
+        return result;
     }
 
-    @TargetApi(Build.VERSION_CODES.N)
     private void sendMsg(ProceedingJoinPoint joinPoint) {
         Method method = ReflectionUtils.getMethod(joinPoint);
         if (method == null) {
@@ -35,10 +38,9 @@ public class CollectCountMsgAspect {
             return;
         }
 
-        CollectCountMsg annotation = method.getDeclaredAnnotation(CollectCountMsg.class);
+        CollectCountMsg annotation = method.getAnnotation(CollectCountMsg.class);
         if (annotation != null) {
-            BroadcastUtils.sendCountMsg(annotation.target(), annotation.isSuccess(), annotation.description());
-            Log.i("weaveJoinPoint", "annotation == " + annotation.getClass().getName());
+            BroadcastUtils.sendCountMsg(annotation.target(), method.getName(), annotation.isSuccess(), annotation.description());
         }
     }
 

@@ -1,4 +1,4 @@
-package com.jiazy.aoptools.runtime;
+package com.jiazy.aoptools.runtime.utils;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
@@ -17,8 +17,6 @@ public class ReflectionUtils {
         MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
         try {
             return methodSignature.getDeclaringType().getDeclaredMethod(methodSignature.getName(), methodSignature.getParameterTypes());
-//			return joinPoint.getTarget().getClass().getDeclaredMethod(
-//					methodSignature.getName(), methodSignature.getParameterTypes());
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
             return null;

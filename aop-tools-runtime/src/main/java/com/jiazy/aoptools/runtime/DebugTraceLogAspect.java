@@ -3,7 +3,7 @@ package com.jiazy.aoptools.runtime;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.jiazy.aoptools.runtime.bean.MethodTraceInfo;
+import com.jiazy.aoptools.runtime.bean.StartMethodInfo;
 import com.jiazy.testmode.annotation.DebugTraceLog;
 
 import org.aspectj.lang.JoinPoint;
@@ -22,7 +22,7 @@ import java.util.LinkedList;
 
 @Aspect
 public class DebugTraceLogAspect {
-	private HashMap<String,LinkedList<MethodTraceInfo>> traceMap = new HashMap<>();
+	private HashMap<String,LinkedList<StartMethodInfo>> traceMap = new HashMap<>();
 
 	private static final String POINTCUT_METHOD =
 			"execution(@com.jiazy.testmode.annotation.DebugTraceLog * *(..))";
@@ -44,13 +44,11 @@ public class DebugTraceLogAspect {
 			StringBuilder builder = new StringBuilder("-->");
 			start = System.currentTimeMillis();
 			Object result = joinPoint.proceed();
-			LinkedList<MethodTraceInfo> traceInfoList = traceMap.get(traceTag);
+			LinkedList<StartMethodInfo> traceInfoList = traceMap.get(traceTag);
 			if(traceInfoList == null){
 				traceInfoList = new LinkedList<>();
 			}
-			MethodTraceInfo info = new MethodTraceInfo();
-			info.setMethodName(joinPoint.getSignature().getName());
-			info.setInvokeTime(start);
+			StartMethodInfo info = new StartMethodInfo(joinPoint.getSignature().getName(), start);
 			traceInfoList.add(info);
 			traceMap.put(traceTag,traceInfoList);
 			builder.append(joinPoint.getSignature().getName());
@@ -59,19 +57,19 @@ public class DebugTraceLogAspect {
 			Object result = joinPoint.proceed();
 			StringBuilder builder = new StringBuilder("<--");
 			end = System.currentTimeMillis();
-			LinkedList<MethodTraceInfo> traceInfoList = traceMap.get(traceTag);
-			long startTime = traceInfoList.removeFirst().getInvokeTime();
+			LinkedList<StartMethodInfo> traceInfoList = traceMap.get(traceTag);
+			long startTime = traceInfoList.removeFirst().getStartTime();
 			builder.append(joinPoint.getSignature().getName()).append("use time").append(end-startTime);
 			Log.e(traceTag,builder.toString());
 		}
 	}
 
 	private boolean isStartMethod(String traceTag,JoinPoint joinPoint){
-		LinkedList<MethodTraceInfo> traceInfoList = traceMap.get(traceTag);
+		LinkedList<StartMethodInfo> traceInfoList = traceMap.get(traceTag);
 		if(traceInfoList == null || traceInfoList.size() == 0){
 			return true;
 		} else {
-			MethodTraceInfo info = traceInfoList.getFirst();
+			StartMethodInfo info = traceInfoList.getFirst();
 			if(info.getMethodName().equals(joinPoint.getSignature().getName())){
 				return true;
 			} else {

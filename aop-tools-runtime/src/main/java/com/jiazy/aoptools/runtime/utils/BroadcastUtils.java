@@ -1,4 +1,4 @@
-package com.jiazy.aoptools.runtime;
+package com.jiazy.aoptools.runtime.utils;
 
 import android.content.Intent;
 import android.util.Log;
@@ -10,26 +10,33 @@ import android.util.Log;
  * 描述：
  */
 public class BroadcastUtils {
-    private static final String BASE_ACTION = "com.testmode.action";
 
-    public static void sendElapsedTime(String target, long spentTime) {
+    public static void sendElapsedTime(String target, String methodName, long spentTime) {
         Intent intent = getAction(target);
         intent.putExtra("spentTime", spentTime);
+        intent.putExtra("methodName", methodName);
         ContextInstance.getInstance().getContext().sendBroadcast(intent);
     }
 
-    public static void sendCountMsg(String target, boolean isSuccess, String description) {
+    public static void sendCountMsg(String target, String methodName, boolean isSuccess, String description) {
         Intent intent = getAction(target);
-        intent.putExtra("isSuccess", isSuccess);
+
+        intent.putExtra("successCount", isSuccess ? 1 : 0);
+        intent.putExtra("failCount", isSuccess ? 0 : 1);
         intent.putExtra("description", description);
+        intent.putExtra("methodName", methodName);
         ContextInstance.getInstance().getContext().sendBroadcast(intent);
     }
 
     private static Intent getAction(String target) {
-        Intent intent = new Intent(BASE_ACTION);
+        Intent intent = new Intent(getAction());
         intent.putExtra("target", target);
         Log.i("jiazy", "target=" + target);
 
         return intent;
+    }
+
+    private static String getAction() {
+        return "com.testmode.action." + ContextInstance.getInstance().getContext().getPackageName();
     }
 }

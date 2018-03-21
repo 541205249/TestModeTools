@@ -9,5 +9,5 @@ import java.lang.annotation.Target;
 @Target({ElementType.TYPE,ElementType.METHOD,ElementType.FIELD,ElementType.CONSTRUCTOR})
 public @interface CollectSpentTimeAsync {
     String target();
-    boolean isStartPoint() default true;
+    boolean isEndPoint() default false;
 }

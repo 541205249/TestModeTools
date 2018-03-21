@@ -44,7 +44,8 @@ public class ExampleUnitTest {
     public void test_annotations3() throws Exception {
         Method method = Anno.class.getDeclaredMethod("getId");
         if (method != null) {
-            TestAnnotation testAnnotation = method.getDeclaredAnnotation(TestAnnotation.class);
+            TestAnnotation testAnnotation = method.getAnnotation(TestAnnotation.class);
+//            TestAnnotation testAnnotation = method.getDeclaredAnnotation(TestAnnotation.class);
             if (testAnnotation != null) {
                 System.out.println("fieldMeta msg:"+testAnnotation.msg());
             }
