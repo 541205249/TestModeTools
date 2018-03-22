@@ -2,8 +2,7 @@
 应用测试模式支持库，用来测试应用的各个指标项，如耗时、正确率和其他待测的相关信息，通过广播的形式把这些信息输出给其他应用收集。
 
 ### 特性
-- 简单易用
-- 高效稳定
+- 简单易用、高效稳定
 - 插件化集成
 - 与主应用代码分离，不侵入业务逻辑
 
@@ -12,14 +11,12 @@
 - 记录当前业务执行结果
 - 记录跟应用相关的关键信息
 
-### 版本和项目名称
-- 发布版本： 0.0.28
-- 插件名称：TestModeTools
-- Android API >= 15
- 
+### 结构图
+![](https://i.imgur.com/AYgXjOE.png)
+
 ### 接入  
 
-- 根目录下的build.gradle里添加
+- 在待测项目的根目录下的build.gradle里添加
 
 		buildscript {
 		    repositories {
@@ -53,7 +50,7 @@
 		methodName  该功能在此方法上执行（如上面的initPlayer()）
 		*******************************************************************
 
-2. @CollectSpentTime**Async**  记录 复杂功能的执行完成的耗时（如调用网络数据到界面展示的整个过程，由主线程-子线程-主线程）
+2. @CollectSpentTime**Async**  记录 复杂功能的执行完成的耗时（多线程里的，如调用网络数据到界面展示的整个过程，由主线程-子线程-主线程）
 		
 		记录功能耗时的起点
 		@CollectSpentTimeAsync(target = "获取用户信息耗时")
@@ -93,6 +90,23 @@
 
 ### 接收方式
 1. 以上信息通过广播发送给其他应用接收，action="com.testmode.action." + applicationId
+
+		如：
+		<receiver android:name=".TestBroadCast">
+            <intent-filter>
+                <action android:name="com.testmode.action.com.eebbk.uservoicecollection" />
+            </intent-filter>
+        </receiver>
+
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			String target = intent.getStringExtra("target");
+			long spentTime = intent.getLongExtra("spentTime", 0);
+			int successCount = intent.getIntExtra("successCount", 0);
+			int failCount = intent.getIntExtra("failCount", 0);
+			String methodName = intent.getStringExtra("methodName");
+			String description = intent.getStringExtra("description");
+		}
 		
 2. 接收广播的应用可参考以下Demo：
 [https://github.com/541205249/TestModeDemo](https://github.com/541205249/TestModeDemo)

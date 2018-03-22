@@ -1,11 +1,11 @@
 apply plugin: 'groovy'
-//apply plugin: 'com.novoda.bintray-release'  //jcenter
-apply plugin: 'maven'//本地使用
+apply plugin: 'com.novoda.bintray-release'  //jcenter
+//apply plugin: 'maven'//本地使用
 
 
 dependencies {
     compile gradleApi()
-    compile localGroovy() //本地仓库需要
+//    compile localGroovy() //本地仓库需要
     compile 'com.android.tools.build:gradle:3.0.1'
     compile 'org.aspectj:aspectjtools:1.8.13'
     compile 'org.aspectj:aspectjrt:1.8.13'
@@ -14,7 +14,7 @@ dependencies {
 
 
 //////////////////////////////本地//////////////////////////////
-uploadArchives {
+/*uploadArchives {
     repositories {
         mavenDeployer {
             repository(url:rootProject.ext.repositoryUrl){
@@ -25,13 +25,13 @@ uploadArchives {
             pom.version = rootProject.ext.publishVersion // 版本号
         }
     }
-}
+}*/
 //////////////////////////////本地//////////////////////////////
 
 
 
 //////////////////////////////jcenter//////////////////////////////
-/*publish {
+publish {
     artifactId = 'plugin'
     userOrg = rootProject.ext.userOrg
     groupId = rootProject.ext.groupId
@@ -40,4 +40,4 @@ uploadArchives {
     desc = rootProject.ext.description
     website = rootProject.ext.website
     licences = rootProject.ext.licences
-}*/
+}

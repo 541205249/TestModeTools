@@ -3,8 +3,8 @@ import org.aspectj.bridge.MessageHandler
 import org.aspectj.tools.ajc.Main
 
 apply plugin: 'com.android.library'
-//apply plugin: 'com.novoda.bintray-release'
-apply plugin: 'maven'//本地使用
+apply plugin: 'com.novoda.bintray-release'
+//apply plugin: 'maven'//本地使用
 
 android {
     compileSdkVersion rootProject.ext.android.compileSdkVersion
@@ -25,7 +25,7 @@ dependencies {
 }
 
 //////////////////////////////本地//////////////////////////////
-uploadArchives{
+/*uploadArchives{
     repositories.mavenDeployer {
         repository(url:rootProject.ext.repositoryUrl){
             authentication(userName: 'admin', password: 'admin123')
@@ -34,11 +34,11 @@ uploadArchives{
         pom.artifactId = "aop-tools-runtime"
         pom.version = rootProject.ext.publishVersion
     }
-}
+}*/
 //////////////////////////////本地//////////////////////////////
 
 
-/*publish {
+publish {
     artifactId = 'aop-tools-runtime'
     userOrg = rootProject.ext.userOrg
     groupId = rootProject.ext.groupId
@@ -47,7 +47,7 @@ uploadArchives{
     desc = rootProject.ext.description
     website = rootProject.ext.website
     licences = rootProject.ext.licences
-}*/
+}
 
 
 android.libraryVariants.all { variant ->

@@ -4,14 +4,12 @@ buildscript {
     repositories {
         google()
         jcenter()
-        maven { url 'C:/Users/admin/.m2/repository' }
+//        maven { url 'C:/Users/admin/.m2/repository' }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.0.1'
         classpath 'org.aspectj:aspectjtools:1.8.13'
-//        classpath 'com.novoda:bintray-release:0.5.0'
-
-//        classpath 'com.jiazy.testmode:plugin:0.1.5'
+        classpath 'com.novoda:bintray-release:0.5.0'
     }
 }
 
@@ -19,7 +17,7 @@ allprojects {
     repositories {
         google()
         jcenter()
-        maven { url 'C:/Users/admin/.m2/repository' }
+//        maven { url 'C:/Users/admin/.m2/repository' }
     }
 }
 
