@@ -8,8 +8,16 @@
 
 ### 功能列表
 - 记录某个功能的耗时
-- 记录当前业务执行结果
+- 记录当前业务执行结果参数
 - 记录跟应用相关的关键信息
+- 输出结果报表
+
+### 用到的技术
+- AOP
+- 注解
+- Gradle插件
+- 抄的JakeWharton的Hugo项目
+
 
 ### 结构图
 ![](https://i.imgur.com/AYgXjOE.png)
@@ -33,8 +41,7 @@
 
 			apply plugin: 'com.jiazy.testmode'
 
-### 使用方式
-
+### 使用方式（buildTypes为debug时才可用）
 
 1. @CollectSpentTime**Sync** 记录方法耗时（单一线程里的）
 
@@ -111,6 +118,8 @@
 2. 接收广播的应用可参考以下Demo：
 [https://github.com/541205249/TestModeDemo](https://github.com/541205249/TestModeDemo)
 
+3. 最终生成的测试结果：
+![](https://i.imgur.com/4GNmFk0.png)
 ### 问题反馈
 使用过程成遇到任何问题，有任何建议或者意见都可以使用下面这个地址反馈给我们。欢迎大家提出问题，我们将会在最短的时间内解决问题。
 **https://github.com/541205249/TestModeTools/issues**
