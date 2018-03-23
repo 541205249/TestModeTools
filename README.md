@@ -16,6 +16,9 @@
 - AOP
 - 注解
 - Gradle插件
+- 抄的JakeWharton的Hugo项目
+
+
 ### 结构图
 ![](https://i.imgur.com/AYgXjOE.png)
 
@@ -38,8 +41,7 @@
 
 			apply plugin: 'com.jiazy.testmode'
 
-### 使用方式
-
+### 使用方式（buildTypes为debug时才可用）
 
 1. @CollectSpentTime**Sync** 记录方法耗时（单一线程里的）
 
