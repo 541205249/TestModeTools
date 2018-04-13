@@ -6,13 +6,11 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * CollectCountMsg
+ * @author LiXiaoFeng
+ * @date 2018/4/11
  */
-
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.METHOD, ElementType.CONSTRUCTOR})
-public @interface CollectCountMsg {
-    String target();
-
-    String description() default "";
+@Target(ElementType.PARAMETER)
+public @interface Tag {
+    String name() default "";
 }

@@ -1,6 +1,6 @@
 apply plugin: 'java'
 apply plugin: 'com.novoda.bintray-release'
-//apply plugin: 'maven'//本地使用
+apply plugin: 'maven'//本地使用
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
@@ -8,7 +8,7 @@ dependencies {
 
 
 //////////////////////////////本地//////////////////////////////
-/*uploadArchives {
+uploadArchives {
     repositories.mavenDeployer {
         repository(url:rootProject.ext.repositoryUrl) {
             authentication(userName: 'admin', password: 'admin123')
@@ -17,7 +17,7 @@ dependencies {
         pom.artifactId = "annotation"
         pom.version = rootProject.ext.publishVersion
     }
-}*/
+}
 //////////////////////////////本地//////////////////////////////
 
 

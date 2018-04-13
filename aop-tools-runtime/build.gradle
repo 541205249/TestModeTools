@@ -4,7 +4,7 @@ import org.aspectj.tools.ajc.Main
 
 apply plugin: 'com.android.library'
 apply plugin: 'com.novoda.bintray-release'
-//apply plugin: 'maven'//本地使用
+apply plugin: 'maven'//本地使用
 
 android {
     compileSdkVersion rootProject.ext.android.compileSdkVersion
@@ -25,7 +25,7 @@ dependencies {
 }
 
 //////////////////////////////本地//////////////////////////////
-/*uploadArchives{
+uploadArchives{
     repositories.mavenDeployer {
         repository(url:rootProject.ext.repositoryUrl){
             authentication(userName: 'admin', password: 'admin123')
@@ -34,7 +34,7 @@ dependencies {
         pom.artifactId = "aop-tools-runtime"
         pom.version = rootProject.ext.publishVersion
     }
-}*/
+}
 //////////////////////////////本地//////////////////////////////
 
 
