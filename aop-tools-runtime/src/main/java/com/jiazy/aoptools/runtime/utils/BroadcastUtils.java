@@ -21,11 +21,9 @@ public class BroadcastUtils {
         ContextInstance.getInstance().getContext().sendBroadcast(intent);
     }
 
-    public static void sendCountMsg(String target, String methodName, boolean isSuccess, String description, String tag) {
+    public static void sendCountMsg(String target, String methodName, String description, String tag) {
         Intent intent = getAction(target);
         Log.d(TAG, intent.getAction());
-        intent.putExtra("successCount", isSuccess ? 1 : 0);
-        intent.putExtra("failCount", isSuccess ? 0 : 1);
         intent.putExtra("description", description);
         intent.putExtra("methodName", methodName);
         intent.putExtra("tag", tag);

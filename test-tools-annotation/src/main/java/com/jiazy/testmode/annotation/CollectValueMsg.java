@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
  * @date 2018/4/4
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.METHOD, ElementType.CONSTRUCTOR})
+@Target({ElementType.METHOD})
 public @interface CollectValueMsg {
     String target();
 
