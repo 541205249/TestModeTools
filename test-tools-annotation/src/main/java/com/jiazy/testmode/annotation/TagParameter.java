@@ -6,11 +6,11 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * DebugTraceLog
+ * @author LiXiaoFeng
+ * @date 2018/4/11
  */
-
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.METHOD)
-public @interface DebugTraceLog {
-	String value() default "";
+@Target(ElementType.PARAMETER)
+public @interface TagParameter {
+    String name() default "";
 }
