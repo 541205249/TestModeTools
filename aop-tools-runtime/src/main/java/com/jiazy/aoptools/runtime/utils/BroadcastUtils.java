@@ -49,6 +49,6 @@ public class BroadcastUtils {
     }
 
     private static String getAction() {
-        return "com.testmode.action." + ContextInstance.getInstance().getContext().getPackageName();
+        return ContextInstance.getInstance().getContext().getPackageName() + ".testmode.action";
     }
 }

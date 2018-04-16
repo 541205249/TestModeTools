@@ -1,7 +1,7 @@
 package com.jiazy.aoptools.runtime;
 
 import com.jiazy.aoptools.runtime.utils.ReflectionUtils;
-import com.jiazy.testmode.annotation.Tag;
+import com.jiazy.testmode.annotation.TagParameter;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 
@@ -11,7 +11,6 @@ import java.util.List;
 
 /**
  * @author LiXiaoFeng
- * @date 2018/4/14
  */
 public abstract class TagAspect {
 
@@ -26,8 +25,8 @@ public abstract class TagAspect {
         for (int i = 0; i < parameterAnnotations.length; i++) {
             Annotation[] annotations = parameterAnnotations[i];
             for (int j = 0; j < annotations.length; j++) {
-                if (annotations[j] instanceof Tag) {
-                    final String name = ((Tag) annotations[j]).name();
+                if (annotations[j] instanceof TagParameter) {
+                    final String name = ((TagParameter) annotations[j]).name();
                     final String info = (String) args[i];
                     tags.add(new Pair(name, info));
                 }

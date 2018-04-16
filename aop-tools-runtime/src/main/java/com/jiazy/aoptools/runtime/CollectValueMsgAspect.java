@@ -5,7 +5,7 @@ import android.util.Log;
 import com.jiazy.aoptools.runtime.utils.BroadcastUtils;
 import com.jiazy.aoptools.runtime.utils.ReflectionUtils;
 import com.jiazy.testmode.annotation.CollectValueMsg;
-import com.jiazy.testmode.annotation.Value;
+import com.jiazy.testmode.annotation.ValueParameter;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -19,7 +19,6 @@ import static com.jiazy.aoptools.runtime.utils.Constant.POINTCUT_PACKAGE;
 
 /**
  * @author LiXiaoFeng
- * @date 2018/4/4
  */
 @Aspect
 public class CollectValueMsgAspect extends TagAspect {
@@ -54,7 +53,7 @@ public class CollectValueMsgAspect extends TagAspect {
                 Annotation[] annotations = parameterAnnotations[i];
                 boolean isFoundValue = false;
                 for (int j = 0; j < annotations.length; j++) {
-                    if (annotations[j] instanceof Value) {
+                    if (annotations[j] instanceof ValueParameter) {
                         value = (Float) args[i];
                         isFoundValue = true;
                         break;
