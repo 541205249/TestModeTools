@@ -32,7 +32,7 @@
 		    }
 	
 		    dependencies {
-		        classpath 'com.jiazy.testmode:plugin:0.1.28'
+		        classpath 'com.jiazy.testmode:plugin:0.1.31'
 		    }
 		}
 
@@ -82,7 +82,7 @@
 
 3. @CollectCountMsg 统计某个功能是否执行正确
 
-		@CollectCountMsg(target = "获取用户信息", isSuccess = true)
+		@CollectCountMsg(target = "获取用户信息")
 		private void showSuccessView() {
 			//TODO		
 		}
@@ -90,18 +90,53 @@
 		*********************通过广播发送信息给其他接收者*********************
 		输出信息：
 		target       测试的功能项
-		successCount 成功次数（1）
-		failCount    失败次数（0）
 		methodName   该功能在此方法上执行
 		*******************************************************************
 
+4. @CollectValueMsg 统计值
+
+        需要与@ValueParameter配合使用
+
+        @CollectValue(target = "获取计算值")
+        private void calculate(@ValueParameter float value){
+            //TODO
+        }
+
+        注：@ValueParameter目前只支持float类型
+
+        *********************通过广播发送信息给其他接收者*********************
+        输出信息：
+        target  测试的功能项
+        value   该功能值
+        *******************************************************************
+
+5、@Tag 用于附带额外信息
+
+        需要与@CollectSpentTimeSync、@CollectSpentTimeAsync、@CollectCountMsg、@CollectValueMsg配合使用
+
+        @CollectCountMsg(target = "获取用户信息")
+        private void showSuccessView(@Tag(name = "tag")String tag) {
+            //TODO
+        }
+
+        注：1、方法中可多个参数同时使用@Tag
+            2、@Tag目前只支持String类型
+
+        *********************通过广播发送信息给其他接收者*********************
+        输出信息：
+        target       测试的功能项
+        methodName   该功能在此方法上执行
+        tag          <tag, xxx>
+        *******************************************************************
+
+
 ### 接收方式
-1. 以上信息通过广播发送给其他应用接收，action="com.testmode.action." + applicationId
+1. 以上信息通过广播发送给其他应用接收，action = applicationId + ".testmode.action"
 
 		如：
 		<receiver android:name=".TestBroadCast">
             <intent-filter>
-                <action android:name="com.testmode.action.com.eebbk.uservoicecollection" />
+                <action android:name="com.eebbk.uservoicecollection.testmode.action" />
             </intent-filter>
         </receiver>
 
@@ -109,17 +144,17 @@
 		public void onReceive(Context context, Intent intent) {
 			String target = intent.getStringExtra("target");
 			long spentTime = intent.getLongExtra("spentTime", 0);
-			int successCount = intent.getIntExtra("successCount", 0);
-			int failCount = intent.getIntExtra("failCount", 0);
 			String methodName = intent.getStringExtra("methodName");
+			String value = intent.getFloatExtra("value")
 			String description = intent.getStringExtra("description");
+			String tag = intent.getStringExtra("tag")
 		}
 		
 2. 接收广播的应用可参考以下Demo：
 [https://github.com/541205249/TestModeDemo](https://github.com/541205249/TestModeDemo)
 
 3. 最终生成的测试结果：
-![](https://i.imgur.com/4GNmFk0.png)
+![](https://i.imgur.com/FjHg54Z.png)
 ### 问题反馈
 使用过程成遇到任何问题，有任何建议或者意见都可以使用下面这个地址反馈给我们。欢迎大家提出问题，我们将会在最短的时间内解决问题。
 **https://github.com/541205249/TestModeTools/issues**

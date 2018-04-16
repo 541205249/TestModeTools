@@ -14,18 +14,18 @@ dependencies {
 
 
 //////////////////////////////本地//////////////////////////////
-/*uploadArchives {
-    repositories {
-        mavenDeployer {
-            repository(url:rootProject.ext.repositoryUrl){
-                authentication(userName: 'admin', password: 'admin123')
-            }
-            pom.groupId = rootProject.ext.groupId
-            pom.artifactId = 'plugin' // 插件名
-            pom.version = rootProject.ext.publishVersion // 版本号
-        }
-    }
-}*/
+//uploadArchives {
+//    repositories {
+//        mavenDeployer {
+//            repository(url:rootProject.ext.repositoryUrl){
+//                authentication(userName: 'admin', password: 'admin123')
+//            }
+//            pom.groupId = rootProject.ext.groupId
+//            pom.artifactId = 'plugin' // 插件名
+//            pom.version = rootProject.ext.publishVersion // 版本号
+//        }
+//    }
+//}
 //////////////////////////////本地//////////////////////////////
 
 

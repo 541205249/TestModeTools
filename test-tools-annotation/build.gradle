@@ -8,16 +8,16 @@ dependencies {
 
 
 //////////////////////////////本地//////////////////////////////
-/*uploadArchives {
-    repositories.mavenDeployer {
-        repository(url:rootProject.ext.repositoryUrl) {
-            authentication(userName: 'admin', password: 'admin123')
-        }
-        pom.groupId = rootProject.ext.groupId
-        pom.artifactId = "annotation"
-        pom.version = rootProject.ext.publishVersion
-    }
-}*/
+//uploadArchives {
+//    repositories.mavenDeployer {
+//        repository(url:rootProject.ext.repositoryUrl) {
+//            authentication(userName: 'admin', password: 'admin123')
+//        }
+//        pom.groupId = rootProject.ext.groupId
+//        pom.artifactId = "annotation"
+//        pom.version = rootProject.ext.publishVersion
+//    }
+//}
 //////////////////////////////本地//////////////////////////////
 
 
