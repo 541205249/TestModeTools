@@ -28,9 +28,9 @@ class AopToolsPlugin implements Plugin<Project>{
         }
 
         project.dependencies {
-            debugCompile 'com.jiazy.testmode:aop-tools-runtime:0.1.29'
+            debugCompile 'com.jiazy.testmode:aop-tools-runtime:0.1.32'
             debugCompile 'org.aspectj:aspectjrt:1.8.13'
-            compile 'com.jiazy.testmode:annotation:0.1.28'
+            compile 'com.jiazy.testmode:annotation:0.1.32'
         }
 
         variants.all { variant ->
