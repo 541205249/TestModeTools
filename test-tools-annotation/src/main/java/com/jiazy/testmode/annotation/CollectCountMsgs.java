@@ -7,9 +7,10 @@ import java.lang.annotation.Target;
 
 /**
  * @author LiXiaoFeng
- * @date 2018/4/11
+ * @date 2018/4/17
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.PARAMETER)
-public @interface ValueParameter {
+@Target({ElementType.METHOD, ElementType.CONSTRUCTOR})
+public @interface CollectCountMsgs {
+    CollectCountMsg[] value();
 }

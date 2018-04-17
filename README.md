@@ -32,7 +32,7 @@
 		    }
 	
 		    dependencies {
-		        classpath 'com.jiazy.testmode:plugin:0.1.31'
+		        classpath 'com.jiazy.testmode:plugin:0.1.33'
 		    }
 		}
 
@@ -40,6 +40,17 @@
 - moudle里的gradle里添加
 
 			apply plugin: 'com.jiazy.testmode'
+
+- 注：现在@CollectSpentTimeSync、@CollectSpentTimeAsync、@CollectCountMsg、@CollectValueMsg都支持在同一个方法进行重复相同注解，因此需要在app模块下的build.gradle添加对Java8的支持：
+
+        android {
+            ...
+
+            compileOptions {
+                sourceCompatibility JavaVersion.VERSION_1_8
+                targetCompatibility JavaVersion.VERSION_1_8
+            }
+        }
 
 ### 使用方式（buildTypes为debug时才可用）
 
@@ -95,14 +106,13 @@
 
 4. @CollectValueMsg 统计值
 
-        需要与@ValueParameter配合使用
-
-        @CollectValue(target = "获取计算值")
-        private void calculate(@ValueParameter float value){
+        @CollectValue(target = "获取计算值",parameterIndex = 0)
+        private void calculate(float value){
             //TODO
         }
 
-        注：@ValueParameter目前只支持float类型
+        注：1、parameterIndex用于指示所取的value是方法中的哪个参数
+            2、@ValueParameter目前支持任意类型，最终所取得值为类型.toString()的返回值
 
         *********************通过广播发送信息给其他接收者*********************
         输出信息：
@@ -110,17 +120,17 @@
         value   该功能值
         *******************************************************************
 
-5、@Tag 用于附带额外信息
+5、@TagParameter 用于附带额外信息
 
         需要与@CollectSpentTimeSync、@CollectSpentTimeAsync、@CollectCountMsg、@CollectValueMsg配合使用
 
         @CollectCountMsg(target = "获取用户信息")
-        private void showSuccessView(@Tag(name = "tag")String tag) {
+        private void showSuccessView(@TagParameter(name = "tag")String tag) {
             //TODO
         }
 
-        注：1、方法中可多个参数同时使用@Tag
-            2、@Tag目前只支持String类型
+        注：1、方法中可多个参数同时使用@TagParameter
+            2、@TagTagParameter目前支持任意类型，最终所取的值为类型.toString()的返回值
 
         *********************通过广播发送信息给其他接收者*********************
         输出信息：
@@ -128,7 +138,6 @@
         methodName   该功能在此方法上执行
         tag          <tag, xxx>
         *******************************************************************
-
 
 ### 接收方式
 1. 以上信息通过广播发送给其他应用接收，action = applicationId + ".testmode.action"

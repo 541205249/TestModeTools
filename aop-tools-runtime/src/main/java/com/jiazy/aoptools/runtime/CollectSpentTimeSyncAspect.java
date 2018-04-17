@@ -3,6 +3,7 @@ package com.jiazy.aoptools.runtime;
 import com.jiazy.aoptools.runtime.utils.BroadcastUtils;
 import com.jiazy.aoptools.runtime.utils.ReflectionUtils;
 import com.jiazy.testmode.annotation.CollectSpentTimeSync;
+import com.jiazy.testmode.annotation.CollectSpentTimeSyncs;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -16,10 +17,10 @@ import static com.jiazy.aoptools.runtime.utils.Constant.POINTCUT_PACKAGE;
 @Aspect
 public class CollectSpentTimeSyncAspect extends TagAspect {
     private static final String POINTCUT_METHOD =
-            "execution(@" + POINTCUT_PACKAGE + ".CollectSpentTimeSync * *(..))";
+            "execution(@" + POINTCUT_PACKAGE + ".CollectSpentTimeSyncs * *(..))";
 
     private static final String POINTCUT_CONSTRUCTOR =
-            "execution(@" + POINTCUT_PACKAGE + ".CollectSpentTimeSync *.new(..))";
+            "execution(@" + POINTCUT_PACKAGE + ".CollectSpentTimeSyncs *.new(..))";
 
     @Pointcut(POINTCUT_METHOD)
     public void methodAnnotated() {
@@ -47,9 +48,13 @@ public class CollectSpentTimeSyncAspect extends TagAspect {
             return;
         }
 
-        CollectSpentTimeSync annotation = method.getAnnotation(CollectSpentTimeSync.class);
-        if (annotation != null) {
-            BroadcastUtils.sendElapsedTime(annotation.target(), method.getName(), spentTime, annotation.description(), getTag(joinPoint));
+        CollectSpentTimeSyncs annotation = method.getAnnotation(CollectSpentTimeSyncs.class);
+        if (annotation == null) {
+            return;
+        }
+        CollectSpentTimeSync[] collectSpentTimeSyncs = annotation.value();
+        for (CollectSpentTimeSync collectSpentTimeSync : collectSpentTimeSyncs) {
+            BroadcastUtils.sendElapsedTime(collectSpentTimeSync.target(), method.getName(), spentTime, collectSpentTimeSync.description(), getTag(joinPoint));
         }
     }
 }

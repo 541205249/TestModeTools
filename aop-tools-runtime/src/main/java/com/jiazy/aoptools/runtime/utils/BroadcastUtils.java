@@ -30,7 +30,7 @@ public class BroadcastUtils {
         ContextInstance.getInstance().getContext().sendBroadcast(intent);
     }
 
-    public static void sendValueMsg(String target, String methodName, float value, String description, String tag) {
+    public static void sendValueMsg(String target, String methodName, String value, String description, String tag) {
         Intent intent = getAction(target);
 
         intent.putExtra("value", value);

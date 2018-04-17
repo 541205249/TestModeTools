@@ -1,9 +1,9 @@
 package com.jiazy.aoptools.runtime;
 
-
 import com.jiazy.aoptools.runtime.utils.BroadcastUtils;
 import com.jiazy.aoptools.runtime.utils.ReflectionUtils;
 import com.jiazy.testmode.annotation.CollectCountMsg;
+import com.jiazy.testmode.annotation.CollectCountMsgs;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -17,7 +17,7 @@ import static com.jiazy.aoptools.runtime.utils.Constant.POINTCUT_PACKAGE;
 @Aspect
 public class CollectCountMsgAspect extends TagAspect {
     private static final String POINTCUT_METHOD =
-            "execution(@" + POINTCUT_PACKAGE + ".CollectCountMsg * *(..))";
+            "execution(@" + POINTCUT_PACKAGE + ".CollectCountMsgs * *(..))";
 
     @Pointcut(POINTCUT_METHOD)
     public void methodAnnotated() {
@@ -36,9 +36,13 @@ public class CollectCountMsgAspect extends TagAspect {
             return;
         }
 
-        CollectCountMsg annotation = method.getAnnotation(CollectCountMsg.class);
+        CollectCountMsgs annotation = method.getAnnotation(CollectCountMsgs.class);
         if (annotation != null) {
-            BroadcastUtils.sendCountMsg(annotation.target(), method.getName(), annotation.description(), getTag(joinPoint));
+            CollectCountMsg[] collectCountMsgs = annotation.value();
+
+            for (CollectCountMsg collectCountMsg : collectCountMsgs) {
+                BroadcastUtils.sendCountMsg(collectCountMsg.target(), method.getName(), collectCountMsg.description(), getTag(joinPoint));
+            }
         }
     }
 }

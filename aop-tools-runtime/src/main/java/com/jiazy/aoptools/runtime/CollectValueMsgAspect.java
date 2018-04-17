@@ -5,14 +5,13 @@ import android.util.Log;
 import com.jiazy.aoptools.runtime.utils.BroadcastUtils;
 import com.jiazy.aoptools.runtime.utils.ReflectionUtils;
 import com.jiazy.testmode.annotation.CollectValueMsg;
-import com.jiazy.testmode.annotation.ValueParameter;
+import com.jiazy.testmode.annotation.CollectValueMsgs;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
 import static com.jiazy.aoptools.runtime.utils.Constant.POINTCUT_PACKAGE;
@@ -24,7 +23,7 @@ import static com.jiazy.aoptools.runtime.utils.Constant.POINTCUT_PACKAGE;
 public class CollectValueMsgAspect extends TagAspect {
     private static String TAG = CollectValueMsgAspect.class.getSimpleName();
     private static final String POINTCUT_METHOD =
-            "execution(@" + POINTCUT_PACKAGE + ".CollectValueMsg * *(..))";
+            "execution(@" + POINTCUT_PACKAGE + ".CollectValueMsgs * *(..))";
 
     @Pointcut(POINTCUT_METHOD)
     public void methodAnnotated() {
@@ -44,31 +43,15 @@ public class CollectValueMsgAspect extends TagAspect {
             return;
         }
 
-        CollectValueMsg annotation = method.getAnnotation(CollectValueMsg.class);
-        Float value = null;
+        CollectValueMsgs annotation = method.getAnnotation(CollectValueMsgs.class);
+        if (annotation == null) {
+            return;
+        }
+        CollectValueMsg[] collectValueMsgs = annotation.value();
         Object[] args = joinPoint.getArgs();
-        if (annotation != null) {
-            Annotation parameterAnnotations[][] = method.getParameterAnnotations();
-            for (int i = 0; i < parameterAnnotations.length; i++) {
-                Annotation[] annotations = parameterAnnotations[i];
-                boolean isFoundValue = false;
-                for (int j = 0; j < annotations.length; j++) {
-                    if (annotations[j] instanceof ValueParameter) {
-                        value = (Float) args[i];
-                        isFoundValue = true;
-                        break;
-                    }
-                }
-                if (isFoundValue) {
-                    break;
-                }
-            }
-
-            if (value == null) {
-                return;
-            }
-
-            BroadcastUtils.sendValueMsg(annotation.target(), method.getName(), value, annotation.description(), getTag(joinPoint));
+        for (CollectValueMsg collectValueMsg : collectValueMsgs) {
+            Object value = args[collectValueMsg.parameterIndex()];
+            BroadcastUtils.sendValueMsg(collectValueMsg.target(), method.getName(), value == null ? "null" : value.toString(), collectValueMsg.description(), getTag(joinPoint));
         }
     }
 }
