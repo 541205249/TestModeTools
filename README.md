@@ -32,7 +32,7 @@
 		    }
 	
 		    dependencies {
-		        classpath 'com.jiazy.testmode:plugin:0.1.33'
+		        classpath 'com.jiazy.testmode:plugin:0.1.35'
 		    }
 		}
 
