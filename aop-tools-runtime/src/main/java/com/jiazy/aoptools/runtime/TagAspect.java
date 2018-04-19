@@ -27,7 +27,7 @@ public abstract class TagAspect {
             for (int j = 0; j < annotations.length; j++) {
                 if (annotations[j] instanceof TagParameter) {
                     final String name = ((TagParameter) annotations[j]).name();
-                    final String info = (String) args[i];
+                    final String info = args[i] == null ? "null" : args[i].toString();
                     tags.add(new Pair(name, info));
                 }
             }

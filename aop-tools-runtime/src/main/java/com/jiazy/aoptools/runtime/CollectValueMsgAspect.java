@@ -5,14 +5,13 @@ import android.util.Log;
 import com.jiazy.aoptools.runtime.utils.BroadcastUtils;
 import com.jiazy.aoptools.runtime.utils.ReflectionUtils;
 import com.jiazy.testmode.annotation.CollectValueMsg;
-import com.jiazy.testmode.annotation.ValueParameter;
+import com.jiazy.testmode.annotation.CollectValueMsgs;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
 import static com.jiazy.aoptools.runtime.utils.Constant.POINTCUT_PACKAGE;
@@ -23,17 +22,31 @@ import static com.jiazy.aoptools.runtime.utils.Constant.POINTCUT_PACKAGE;
 @Aspect
 public class CollectValueMsgAspect extends TagAspect {
     private static String TAG = CollectValueMsgAspect.class.getSimpleName();
-    private static final String POINTCUT_METHOD =
+    private static final String POINTCUT_METHOD_SINGLE =
             "execution(@" + POINTCUT_PACKAGE + ".CollectValueMsg * *(..))";
+    private static final String POINTCUT_METHOD_MULTIPLE =
+            "execution(@" + POINTCUT_PACKAGE + ".CollectValueMsgs * *(..))";
 
-    @Pointcut(POINTCUT_METHOD)
-    public void methodAnnotated() {
+    @Pointcut(POINTCUT_METHOD_SINGLE)
+    public void methodSingleAnnotated() {
     }
 
-    @Around("methodAnnotated()")
-    public Object weaveJoinPoint(ProceedingJoinPoint joinPoint) throws Throwable {
+    @Pointcut(POINTCUT_METHOD_MULTIPLE)
+    public void methodMultipleAnnotated() {
+
+    }
+
+    @Around("methodSingleAnnotated()")
+    public Object weaveSingleAnnotatedJoinPoint(ProceedingJoinPoint joinPoint) throws Throwable {
         Object result = joinPoint.proceed();
         sendMsg(joinPoint);
+        return result;
+    }
+
+    @Around("methodMultipleAnnotated()")
+    public Object weaveMultipleAnnotatedJoinPoint(ProceedingJoinPoint joinPoint) throws Throwable {
+        Object result = joinPoint.proceed();
+        sendMsgs(joinPoint);
         return result;
     }
 
@@ -45,30 +58,31 @@ public class CollectValueMsgAspect extends TagAspect {
         }
 
         CollectValueMsg annotation = method.getAnnotation(CollectValueMsg.class);
-        Float value = null;
+        if (annotation == null) {
+            return;
+        }
         Object[] args = joinPoint.getArgs();
-        if (annotation != null) {
-            Annotation parameterAnnotations[][] = method.getParameterAnnotations();
-            for (int i = 0; i < parameterAnnotations.length; i++) {
-                Annotation[] annotations = parameterAnnotations[i];
-                boolean isFoundValue = false;
-                for (int j = 0; j < annotations.length; j++) {
-                    if (annotations[j] instanceof ValueParameter) {
-                        value = (Float) args[i];
-                        isFoundValue = true;
-                        break;
-                    }
-                }
-                if (isFoundValue) {
-                    break;
-                }
-            }
+        Object value = args[annotation.parameterIndex()];
+        BroadcastUtils.sendValueMsg(annotation.target(), method.getName(), value == null ? "null" : value.toString(), annotation.description(), getTag(joinPoint));
+    }
 
-            if (value == null) {
-                return;
-            }
 
-            BroadcastUtils.sendValueMsg(annotation.target(), method.getName(), value, annotation.description(), getTag(joinPoint));
+    private void sendMsgs(ProceedingJoinPoint joinPoint) {
+        Method method = ReflectionUtils.getMethod(joinPoint);
+        if (method == null) {
+            Log.i(TAG, "method == null");
+            return;
+        }
+
+        CollectValueMsgs annotation = method.getAnnotation(CollectValueMsgs.class);
+        if (annotation == null) {
+            return;
+        }
+        CollectValueMsg[] collectValueMsgs = annotation.value();
+        Object[] args = joinPoint.getArgs();
+        for (CollectValueMsg collectValueMsg : collectValueMsgs) {
+            Object value = args[collectValueMsg.parameterIndex()];
+            BroadcastUtils.sendValueMsg(collectValueMsg.target(), method.getName(), value == null ? "null" : value.toString(), collectValueMsg.description(), getTag(joinPoint));
         }
     }
 }
